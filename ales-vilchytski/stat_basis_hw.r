@@ -9,15 +9,17 @@ library(psych)
 describe(data[, -9])
 
 # Среднее значение параметров по регионам
-aggregate(data[, -9], by = list(region=data$Region), mean)
+meanParams = aggregate(data[, -9], by = list(region=data$Region), mean)
 # медианное значение
-aggregate(data[, -9], by = list(region=data$Region), median)
+medianParams = aggregate(data[, -9], by = list(region=data$Region), median)
+
+par(mfrow=c(1,2))
+dotchart(meanParams$Income, xlab="Доход (срзнач)", labels=data$Region)
+dotchart(medianParams$Income, xlab="Доход (медиана)", labels=data$Region)
 
 # =========
 par(mfrow=c(1,1))
 # Визуализация
-# Точечная диаграмма
-dotchart(m$mpg, main=c('Расход топлива по машинам'), labels=row.names(m), xlab='Расход')
 
 # Точечная диаграмма с отсортированными, сгрупированными и раскрашенными значениями
 x <- data[order(data$Murder),]

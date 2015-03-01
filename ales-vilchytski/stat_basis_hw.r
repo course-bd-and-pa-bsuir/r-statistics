@@ -16,8 +16,8 @@ medianParams = aggregate(data[, -9], by = list(region=data$Region), median)
 par(mfrow=c(1,2))
 dotchart(meanParams$Income, xlab="Доход (срзнач)", labels=data$Region)
 dotchart(medianParams$Income, xlab="Доход (медиана)", labels=data$Region)
-
 # =========
+
 par(mfrow=c(1,1))
 # Визуализация
 

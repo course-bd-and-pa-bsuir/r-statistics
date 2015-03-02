@@ -32,6 +32,7 @@ plot(iregion, main = 'Income by regions', ylab = 'Income')
 
 # Boxplot for incomes depending on region
 regfact = factor(region)
-boxplot(Income ~ region, data = states, varwidth = TRUE)
+boxplot(Income ~ region, data = states, varwidth = TRUE, 
+        main = 'Income by regions', xlab = 'Region', ylab = 'Income')
 
 

@@ -22,5 +22,6 @@ install.packages(c(
                 "mice","minqa","mnormt","moments","munsell","mvtnorm",
                 "nloptr","pastecs","pbkrtest","plyr","proto","psych",
                 "quantreg","randomForest","RColorBrewer","Rcpp","RcppEigen",
-                "reshape2","scales","SNPassoc","SparseM","stringr","vcd","xtable"))
+                "reshape2","scales","SNPassoc","SparseM","stringr","vcd","xtable",
+				"lmtest", "nortest", "corrgram", "stats", "car"))
 ```

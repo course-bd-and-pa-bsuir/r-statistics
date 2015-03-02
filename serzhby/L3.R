@@ -1,22 +1,20 @@
-setwd('~/code/R/BDPA/r-statistics/serzhby')
+setwd('~/code/R/r-statistics/serzhby')
 data = read.csv('lec2_source.csv')
 data = data$X17.1
 # data = rnorm(1000)
-
-# test. if p-value > alpha - it's ok
+library(moments)
+library(nortest)
+library(vcd)
+# test for normality. if p-value > alpha - it's ok
 jarque.test(data)
 
 qqnorm(data)
 qqline(data)
 
-library(nortest)
-
 pearson.test(data)
 
 st = state.x77
 # plot(st$Murder, st$Population)
-
-library(corrgram)
 
 corrgram(st)
 
@@ -40,3 +38,4 @@ chisq.test(mytable)
 # fisher.test()
 
 assocstats(mytable)
+

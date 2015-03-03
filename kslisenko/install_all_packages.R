@@ -1,0 +1,2 @@
+## install required packages for the course
+install.packages(c("acepack","car","colorspace","compareGroups","dichromat","digest","ellipse","epitools","Formula","gdata","ggplot2","gtable","gtools","haplo.stats","HardyWeinberg","Hmisc","labeling","latticeExtra","lme4","manipulate","mice","minqa","mnormt","moments","munsell","mvtnorm","nloptr","pastecs","pbkrtest","plyr","proto","psych","quantreg","randomForest","RColorBrewer","Rcpp","RcppEigen","reshape2","scales","SNPassoc","SparseM","stringr","vcd","xtable"))

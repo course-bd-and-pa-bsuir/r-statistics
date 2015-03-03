@@ -59,3 +59,5 @@ plot(prices, prices2)
 ## гистограмма
 hist(prices)
 hist(prices2)
+
+## примеры работы с датасетом 

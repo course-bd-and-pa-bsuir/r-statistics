@@ -2,10 +2,24 @@
 
 data <- read.csv("data/lab4_24.csv", header=TRUE)
 
+library(car)
+# Подгонка показывает большое количество выбросов
 scatterplotMatrix(data)
 
 # большой p-value при коэффициентах и малый при модели свидетельствует об автокорреляции
-fit <- lm(data$y~(data$x1+data$x2+data$x3+data$x4)) 
+fit <- lm(y~(x1+x2+x3+x4), data=data) 
 summary(fit)
 
+# По scatterplotMatrix видна зависимость x1-x2-x3, попробуем корреляцию y~(x1+x4)
+fit <- lm(y~(x1+x4), data=data)
+summary(fit)
 
+# x1 с большой вероятностью оказывает влияние и даёт R-sq 0,71, а x4 можно выкинуть.
+fit <- lm(y~(I(x1)), data=data)
+summary(fit)
+# качество модели улучшилось - профит.
+
+coefficients(fit)
+# Вывод: имеет место линейная зависимость y = 0.76+0.03x1 
+
+# ================

@@ -1,4 +1,4 @@
-setwd('~/code/R/r-statistics/serzhby')
+setwd('~/code/R//BDPA/r-statistics/serzhby')
 data = read.csv('lec2_source.csv')
 data = data$X17.1
 # data = rnorm(1000)

@@ -56,7 +56,7 @@ bptest(fit)
 # Вывод: модель нерелевантна
 # ==========
 
-# TODO: разбить данные по районам и построить модели, если ок - проверить тестом Пирсона и Жака-Бера
+# Разбиение данных по районам и построение модели, проверка тестами Пирсона и Жака-Бера
 
 model = LnCena~(Nkomnat+LnPlZ+LnPlK+ketaz+Type)
 p.val = 0.05
@@ -80,15 +80,15 @@ for (r in levels(data$Rayon)) {
   
   # Модель гомоскедастична при p > 0.05
   sked1 = bptest(fit)$p.value
-  sked2 = ncvTest(fit)$p.value
+  sked2 = ncvTest(fit)$p
   
   # Если критерий более 0.05 - распределение нормальное
   jq = jarque.test(residuals(fit))$p.value
   ps = pearson.test(residuals(fit))$p.value
   
   results <- rbind(results, data.frame(Rayon = r, 
-                                       AutoCorr = corDW < p.val || cor1 < p.val || cor2 < p.val, 
-                                       GetSK = sked1 < p.val || sked2 < p.val,
+                                       NoAutoCorr = corDW > p.val && cor1 > p.val && cor2 > p.val, 
+                                       NoGetSK = sked1 > p.val && sked2 > p.val,
                                        JarqueNorm = jq > p.val,
                                        PearsonNorm = ps > p.val))
   

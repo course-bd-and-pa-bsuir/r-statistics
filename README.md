@@ -3,6 +3,9 @@ Statistical tasks and homeworks in R (http://www.r-project.org/)
 
 Репозиторий для задач и домашек на R
 
+Краткий гайд по работе с репозиторием: http://course-bd-and-pa-bsuir.github.io/r-statistics/
+Шпаргалки/конспекты: https://drive.google.com/folderview?id=0BwJrICCSFUGYNDBBc3kySXNLNkE&usp=drive_web
+
 Предлагаемый Workflow:
 
 1. Каждый заводит отдельную папку со своим именем в основной ветке (master)
@@ -23,5 +26,6 @@ install.packages(c(
                 "nloptr","pastecs","pbkrtest","plyr","proto","psych",
                 "quantreg","randomForest","RColorBrewer","Rcpp","RcppEigen",
                 "reshape2","scales","SNPassoc","SparseM","stringr","vcd","xtable",
-				"lmtest", "nortest", "corrgram", "stats", "car"))
+                "lmtest", "nortest", "corrgram", "stats", "car", "gplots", 
+                "scatterplot3d", ))
 ```

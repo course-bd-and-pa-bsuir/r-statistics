@@ -4,7 +4,7 @@ library(car)
 library(lmtest)
 library(nortest)
 library(forecast)
-lines(lm(lbeer~t+t2+sin.t+cos.t)$fit,col=4)
+# lines(lm(lbeer~t+t2+sin.t+cos.t)$fit,col=4)
 bd=read.csv("birth.csv",header=FALSE,sep=";")# ?????????
 b.ts=ts(bd$V1,frequency=12, start=c(1946,1))# ????????????? ? TS
 is.ts(b.ts)

@@ -50,19 +50,27 @@ flats$NkThree[flats$Nkomnat < 3] = 0
 boxplot(flats$Cena~flats$District, cex.axis=0.47)
 
 # Выборки по районам и без выбросов
-flats_m2 <- flats[which((flats$District == "Советский"|flats$District == "Партизанский")&flats$Id != 280&flats$Id != 209&flats$Id != 253&flats$Id != 202),]
-flats_m2 <- flats[which((flats$District == "Центральный")&flats$Id != 274&flats$Id != 367&flats$Id != 324&flats$Id != 141),])
 flats_m2 <- flats[which((flats$District == "Заводской")&flats$Id != 111),] # PlK = 2!
+
+flats_m2 <- flats[which((flats$District == "Ленинский")&flats$Id != 17&flats$Id != 79&flats$Id != 106&flats$Id != 378&flats$Id != 251&flats$Id != 384&flats$Id != 217&flats$Id != 284&(flats$PlOb - flats$PlZ - flats$PlK)>0),] # для ленинского нужно log(PlOb - PlZ - PlK) + 
+
 flats_m2 <- flats[which((flats$District == "Московский")&flats$Id != 327&flats$Id != 309&flats$Id != 80),]
-flats_m2 <- flats[which((flats$District == "Фрунзенский")&flats$Id != 366&flats$Id != 342&flats$Id != 242),]
+
 flats_m2 <- flats[which((flats$District == "Октябрьский")&flats$Id != 372&flats$Id != 362),]
+
 flats_m2 <- flats[which((flats$District == "Первомайский")&flats$Id != 255&flats$Id != 43&flats$Id != 321&flats$Id != 252&flats$Id != 371),]
 
-# с Ленинским ничего не вышло
-flats_m2 <- flats[which((flats$District == "Ленинский")&flats$Id != 17&flats$Id != 79&flats$Id != 106&flats$Id != 378&flats$Id != 251&flats$Id != 384&flats$Id != 217&flats$Id != 317&flats$Id != 284&(flats$PlOb - flats$PlZ - flats$PlK)>0),] # todo
+flats_m2 <- flats[which((flats$District == "Советский"|flats$District == "Партизанский")&flats$Id != 280&flats$Id != 209&flats$Id != 253&flats$Id != 202),]
+
+flats_m2 <- flats[which((flats$District == "Фрунзенский")&flats$Id != 366&flats$Id != 342&flats$Id != 242),]
+
+flats_m2 <- flats[which((flats$District == "Центральный")&flats$Id != 274&flats$Id != 367&flats$Id != 324&flats$Id != 141),]
 
 # Модель - благодаря функции printsum тестирует модель и отображает результаты
 m2 <- printsum(lm(LnCena ~ log(PlOb - PlZ - PlK) + log(PlZ) + log(PlK) + log(CenterDistance), data=flats_m2))
+
+# Debug
+# ; summary(m2); cat("\n"); durbinWatsonTest(m2); cat("\n"); pearson.test(residuals(m2)); cat("\n"); bptest(m2)
 
 # Другие параметры, немного уточняющие модель
 # I(Elit * NkThree * DistrictFru) + I(Type*(1-(DistrictZav|DistrictLen))) + I(Elit * NkThree * DistrictFru) + 
@@ -96,6 +104,23 @@ print(tdistricts)
 # ФУНКЦИИ
 #
 #
+
+print_lm <- function(m) {
+  c = coef(summary(m))[,1]
+  s = c(names(m$model[1,])[1], "=")
+  for (i in 1:length(c)) {
+    n = names(c)[i]
+    if (n == "(Intercept)") {
+      s = c(s, format(signif(c[i], digits = 3), decimal.mark=",", big.mark="",small.mark=""))
+    } else {
+      s = c(s, "+", paste(format(signif(c[i], digits = 3), decimal.mark=",", big.mark="",small.mark=""), n, sep=""))
+    }
+  }
+  s = sub("LnCena", "ln(Cena)", s)
+  s = sub("log", "ln", s)
+  s = sub("\\+ -", "- ", s)
+  paste(s, collapse = " ")
+}
 
 # src: http://stackoverflow.com/questions/5587676/pull-out-p-values-and-r-squared-from-a-linear-regression
 # возвращает p-value из модели
@@ -140,7 +165,12 @@ printsum <- function(m, p1=0.05, p2=0.05)
   names(t3) = c(paste("model <", p1), paste("tests >", p2))
   print(t3)
   cat("\nmulti-collinearity\n")
-  print(vif(m2))
+  print(vif(m))
+  
+  plot(c(1:length(m$model[,1])), m$model[,1], type="l", col=1, xlab="i", ylab="fitted / y"); lines(c(1:length(m$model[,1])), fitted(m), type="l", col=2)
+  
+  cat("\nformula\n")
+  print(print_lm(m))
   
   return(m)
 }

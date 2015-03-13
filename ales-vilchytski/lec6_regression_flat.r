@@ -97,7 +97,7 @@ check.fit <- function(fit, p.value = 0.05) {
   # Если p > 0.05 - распределение нормальное
   res$NORM_JQ = jarque.test(residuals(fit))$p.value
   res$NORM_PE = pearson.test(residuals(fit))$p.value
-  res$NORM_OK = res$NORM_JQ > p.value || res$NORM_PE > p.value
+  res$NORM_OK = res$NORM_JQ > p.value && res$NORM_PE > p.value
   
   # Автокорреляция отсутствует при p > 0.05
   res$AC_DW = durbinWatsonTest(fit)$p
@@ -115,7 +115,7 @@ check.fit <- function(fit, p.value = 0.05) {
   res$GS_BP = bptest(fit)$p.value
   res$GS_NCV = ncvTest(fit)$p
   res$GS_GQ = gqtest(fit)$p.value
-  res$GS_OK = res$GS_BP > p.value || res$GS_NCV > p.value || res$GS_GQ > p.value
+  res$GS_OK = res$GS_BP > p.value && res$GS_NCV > p.value && res$GS_GQ > p.value
   
   res$ALL_OK = res$NORM_OK && res$AC_OK && res$GS_OK
   
@@ -158,9 +158,11 @@ check.fit(fit)
 # На гистограмме с линией нормального распределения видны выбросы
 
 
-# Попробуем модель на всю выборку
-fit <- lm(LnCena~(LnPlZ+LnPlK+Nkomnat+LnCenterDistance+LnStationDistance), data=data)
-summary(fit)
+fit1 <- lm(LnCena~(LnPlZ+LnPlK+Nkomnat+LnCenterDistance+LnStationDistance), data=data[data$Rayon=='Фрунзенский',])
+check.fit(fit1)
+
+fit2 <- lm(LnCena~(Rayon+LnPlZ+LnPlK+Nkomnat), data=data)
+summary(fit2)
 
 check.fit(fit) # Распределение остатков отлично от нормального
 
@@ -184,3 +186,13 @@ check.fit(fitD2) # Теперь распределение нормальное,
 par(mfrow=c(1,1))
 plot(residuals(fit), type="b")
 
+
+
+# Всё-таки будем делать разбивку по районам, просто добавим данных
+
+model = LnCena~(LnPlZ+LnPlK+LnCenterDistance)
+d = data[data$Rayon=='Партизанский',]
+durbinWatsonTest(fit)
+fit <- lm(model, data=d)
+summary(fit)
+check.fit(fit)

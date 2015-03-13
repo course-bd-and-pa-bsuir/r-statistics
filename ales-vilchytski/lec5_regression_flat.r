@@ -80,7 +80,7 @@ for (r in levels(data$Rayon)) {
   
   # Модель гомоскедастична при p > 0.05
   sked1 = bptest(fit)$p.value
-  sked2 = ncvTest(fit)$p
+  sked2 = gqtest(fit)$p.value
   
   # Если критерий более 0.05 - распределение нормальное
   jq = jarque.test(residuals(fit))$p.value

@@ -27,5 +27,8 @@ install.packages(c(
                 "quantreg","randomForest","RColorBrewer","Rcpp","RcppEigen",
                 "reshape2","scales","SNPassoc","SparseM","stringr","vcd","xtable",
                 "lmtest", "nortest", "corrgram", "stats", "car", "gplots", 
-                "scatterplot3d", ))
+                "scatterplot3d", "Amelia", "BaBoon", "cat", "deducorrect", "e1071", 
+				"ForImp", "Hmisc", "imputation", "impute", "mi", "mice", "mix", 
+				"norm", "robCompositions", "rrcovNA", "StatMatch", "VIM", 
+				"yaImpute", "zoo", "outliers" ))
 ```

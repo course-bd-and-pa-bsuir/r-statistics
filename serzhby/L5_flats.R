@@ -1,12 +1,15 @@
-setwd('~/code/R//BDPA/r-statistics/serzhby/')
+setwd('~/code/R//r-statistics/serzhby/')
 
 library(car)
 library(zoo)
 library(lmtest)
 library(scatterplot3d)
 library(nortest)
+library(tseries)
+library(moments)
 
 flats = read.csv('flats.csv', sep = ';')
+flats = subset(flats, district != "")
 
 colnames(flats) = c('id', 'address', 'district', 'cost', 'lnCost', 'costM', 'roomCount', 'elit', 'areaAll', 'lnAreaAll', 'areaZ', 'lnAreaZ', 'areaKitchen', 'lnAreaKitchen', 'ketazh', 'type', 'year', 'phone', 'balcon')
 
@@ -16,6 +19,7 @@ plot(cost ~ areaAll)
 
 plot(lnCost ~ lnAreaAll)
 # вывод: разброс лог меньше
+# plot(lnCost ~ lnAreaKitchen + lnAreaZ)
 
 linModel = lm(lnCost ~ lnAreaKitchen + lnAreaZ)
 summary(linModel)
@@ -75,6 +79,7 @@ jarque.test(residuals(subLinModel))
 
 
 kruskal.test(flats$cost ~ flats$district)
+kruskal.test(flats$lnCost ~ flats$district)
 # районы не однородны по цене. надо выбрать 2 района, в которых одинаковы.
 
 doubleSubset = subset(flats, district == c("Октябрьский", "Московский"), na = na.fail)
@@ -99,7 +104,9 @@ doubleLinModel = lm(lnCost ~ lnAreaKitchen + lnAreaZ, data = doubleSubset)
 summary(doubleLinModel)
 
 linM1 = lm(lnCost ~ lnAreaKitchen + lnAreaZ + dummy, data = doubleSubset)
+linM1 = doubleLinModel
 linM2 = lm(lnCost ~ lnAreaKitchen + lnAreaZ + ketazh, data = doubleSubset)
+#linM2 = lm(lnCost ~ lnAreaKitchen + lnAreaZ + year, data = doubleSubset)
 # ввели новый фактор ketazh
 anova(linM1, linM2)
 # p-value > 5% - значит ketazh не влияет на регрессию
@@ -113,17 +120,26 @@ residualPlot(linM1)
 durbinWatsonTest(linM1)
 # p-value > 5%. no autocorrelation ??
 
+for (i in 1:6) {
+  bt = bgtest(linM1, order = i, type = 'F')
+  print(c("bg statistic: ", bt$statistic, " p-value", bt$p.value))
+}
+
 bgtest(linM1, order = 1, type = 'F')
 bgtest(linM1, order = 2, type = 'F')
 bgtest(linM1, order = 3, type = 'F')
 # p-value > 5% - no autocorrelation
+res = residuals(linM1)
+# for (i in 1:6) {
+#   bt = Box.test(res, lag = i, type = "Ljung-Box")
+#   print(bt$p.value)
+# }
 
 # проверяем на гетероскедастичность
 bptest(linM1)
 # p-value > 5%. нет гетероскедастичности
 
 # проверим остатки на нормальность
-res = residuals(linM1)
 pearson.test(res)
 jarque.test(res)
 # p-value must be > 5%. it's not, 4.5%

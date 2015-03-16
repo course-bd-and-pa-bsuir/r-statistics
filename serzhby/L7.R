@@ -1,4 +1,4 @@
-setwd('~/code/R//BDPA/r-statistics/serzhby')
+setwd('~/code/R//r-statistics/serzhby')
 # выбрать временной ряд из БЖД. построить модель множественной регрессии.
 # попытаться смоделировать сезонность. 
 data = read.csv('bzd.csv', header = TRUE, sep = ';')
@@ -29,14 +29,16 @@ summary(dataReg)
 # проверка автокорреляции в остатках
 res = residuals(dataReg)
 acf(res, lag.max = 20) #ACF  автокорреляционная функция
-for (i in 1:6) {
+for (i in 1:15) {
   bt = Box.test(res, lag = i, type = "Ljung-Box")
-  print(bt$p.value)
+  print(c(bt$statistic, bt$p.value))
 }
 # есть автокорреляция в остатках
 
 pearson.test(res)
 # остатки распределены нормально
+
+bptest(dataReg)
 
 hw = HoltWinters(data$ts, beta=FALSE, gamma=FALSE)
 accuracy(dataReg)

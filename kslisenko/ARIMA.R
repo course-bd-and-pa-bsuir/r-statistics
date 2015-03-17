@@ -2,7 +2,11 @@ library(astsa)
 library(tseries)
 library(nortest)
 library(TTR)
-library(car)
+library(car)sdfsdfsdf
+
+
+
+
 library(lmtest)
 library(nortest)
 library(forecast)

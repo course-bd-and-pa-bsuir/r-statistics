@@ -2,11 +2,14 @@ testModel = function(model, verbose = FALSE) {
   print(summary(model))
   res = residuals(model)
   
+  result = TRUE
+  
   if(testLjungBox(res, verbose)) {
     cat("Box-Ljung: no autocorrelation in residuals")
   }
   else {
     cat("Box-Ljung: autocorrelation in residuals")
+    result = FALSE
   }
   cat("\n")
   
@@ -15,6 +18,7 @@ testModel = function(model, verbose = FALSE) {
   }
   else {
     cat("Pearson: Non-normal distribution")
+    result = FALSE
   }
   cat("\n")
   
@@ -23,8 +27,10 @@ testModel = function(model, verbose = FALSE) {
   }
   else {
     cat("Breusch-Pagan: Heterosсedasticity in residuals")
+    result = FALSE
   }
   cat("\n")
+  return(result)
 }
 
 testLjungBox = function(residuals, verbose, order = 15) {

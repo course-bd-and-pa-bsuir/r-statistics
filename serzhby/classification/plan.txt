@@ -1,0 +1,6 @@
+1. Try to create a linear regression function for non categorial variables. For example, length ~ diameter + height
+2. If regression is bad, try to remove outliers (graphical analysis shows a lot of outliers).
+3. Try to use k nearest neighbours method to fill in categorial values (sex).
+4. Remove all remaining rows containing NAs after previous steps (we have >4000 samples, omitting rows with NAs won't make a lot of troubles).
+5. Check efficiency of selected methods by comparing statistical values of original and resulting datasets.
+

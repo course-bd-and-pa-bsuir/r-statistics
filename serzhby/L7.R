@@ -1,29 +1,29 @@
-setwd('~/code/R//r-statistics/serzhby')
+setwd('~/code/R/BDPA/r-statistics/serzhby')
 # выбрать временной ряд из БЖД. построить модель множественной регрессии.
 # попытаться смоделировать сезонность. 
-data = read.csv('bzd.csv', header = TRUE, sep = ';')
-s = c('1', '2', '3', '4')
-seasons = c()
-trend = c()
-for(a in seq(1, 7)) {
-  seasons = c(seasons, s)
-}
-for(a in 1:17) {
-  trend = c(trend, 0)
-}
-for(a in 1:11) {
-  trend = c(trend, 1)
-}
 
-data$trend = trend
-data$seasons = seasons
+source('L7_prepare_data.R')
+source('test_lm.R')
 
-data$ts = ts(data$MINSK, frequency = 4)
-plot(data$ts)
+data = prepareData()
+
+plot(data$ts, xlab = "Год", ylab = "Объём")
+plot(decompose(data$ts), xlab = "Год")
 
 t = 1:28
-plot(t, data$ts, type="l")
-dataReg = lm(data$ts ~ t + data$seasons + data$trend)
+plot(t, data$ts, type="l", xlim = c(1, 40), ylim = c(500, 2000))
+dataReg = lm(ts ~ X + seasons + trend, data = data)
+dataReg = lm(ts ~ X + seasons, data = data)
+
+testModel(dataReg, verbose = TRUE)
+
+newdata = data.frame(X = c(28:35), seasons = c('4', '1', '2', '3'), trend = c(0))
+prediction = predict(dataReg, newdata, interval = "predict")
+
+prediction = as.data.frame(prediction)
+
+lines(28:35, prediction$upr, col="blue")
+
 lines(t, fitted(dataReg), col="red")
 summary(dataReg)
 # проверка автокорреляции в остатках

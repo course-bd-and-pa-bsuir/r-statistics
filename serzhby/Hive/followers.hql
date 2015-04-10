@@ -1,19 +1,18 @@
 DROP TABLE IF EXISTS links;
 DROP TABLE IF EXISTS parsed;
-DROP TABLE IF EXISTS swapped;
+DROP TABLE IF EXISTS result;
 CREATE TABLE links (link STRING);
 LOAD DATA INPATH 'links.json' OVERWRITE INTO TABLE links;
 
 CREATE TABLE parsed AS
-SELECT regexp_extract(link, '\\["(.*?)", "(.*?)"\\]', 1) AS left, regexp_extract(link, '\\["(.*?)", "(.*?)"\\]', 2) AS right, "1" FROM links;
+	SELECT regexp_extract(link, '\\["(.*?)", "(.*?)"\\]', 1) AS left, 
+		regexp_extract(link, '\\["(.*?)", "(.*?)"\\]', 2) AS right 
+	FROM links;
 
-CREATE TABLE swapped AS
-SELECT left AS left, right AS right, "0" AS sw FROM parsed WHERE left > right 
-UNION ALL 
-SELECT right AS left, left AS right, "1" AS sw FROM parsed WHERE left < right;
+CREATE TABLE result AS
+	SELECT * FROM parsed a 
+	WHERE NOT EXISTS 
+		(SELECT * FROM parsed b 
+		WHERE a.left = b.right AND a.right = b.left);
 
-SELECT * FROM swapped a WHERE NOT EXISTS (select * from swapped b where a.left = b.left AND a.right = b.right AND b.sw = "1")
-UNION ALL
-SELECT * FROM swapped a WHERE NOT EXISTS (select * from swapped b where a.left = b.left AND a.right = b.right AND b.sw = "0");
-
-
+SELECT * FROM result;

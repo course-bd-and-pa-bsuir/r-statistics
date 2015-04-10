@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Fri Apr 10 12:52:44 MSK 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-014c-a2be-f065-000009fe5e30 
+on database directory /home/sergey/code/BDPA/r-statistics/serzhby/Spark/SparkSqlFollowers/metastore_db with class loader sun.misc.Launcher$AppClassLoader@3d82c5f3 
+Loaded from file:/home/sergey/.m2/repository/org/apache/derby/derby/10.10.1.1/derby-10.10.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_40-b25
+user.dir=/home/sergey/code/BDPA/r-statistics/serzhby/Spark/SparkSqlFollowers
+os.name=Linux
+os.arch=amd64
+os.version=3.13.0-24-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

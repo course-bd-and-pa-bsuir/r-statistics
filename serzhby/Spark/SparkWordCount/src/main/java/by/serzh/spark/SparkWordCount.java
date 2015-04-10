@@ -15,13 +15,17 @@ import java.util.List;
 public class SparkWordCount {
 
     public static void main(String[] args) {
+        if(args.length < 1) {
+            System.out.println("Need argument: input file");
+            System.exit(1);
+        }
         SparkConf conf = new SparkConf().setAppName("Word count").setMaster("local[1]");
         JavaSparkContext sc = new JavaSparkContext(conf);
-        JavaRDD<String> textFile = sc.textFile("/home/sergey/log.txt", 1);
+        JavaRDD<String> textFile = sc.textFile(args[0], 1);
         JavaRDD<String> lines = textFile.flatMap(new FlatMapFunction<String, String>() {
             @Override
             public Iterable<String> call(String s) throws Exception {
-                return Arrays.asList(s.split(" "));
+                return Arrays.asList(s.split("\\s"));
             }
         });
         JavaPairRDD<String, Integer> tuples = lines.mapToPair(new PairFunction<String, String, Integer>() {

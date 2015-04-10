@@ -13,11 +13,12 @@ insertNA = function(dataset) {
 }
 
 removeNA = function(dataset) {
-  nas = rep(FALSE, times = length(dataset[,1]))
-  for(i in 1:length(colnames(dataset))) {
-    nas = nas | is.na(dataset[, i])
-  }
-  nas = !nas
-  filteredSet = dataset[nas, ]
-  return(filteredSet)
+  return(na.omit(dataset))
+  #nas = rep(FALSE, times = length(dataset[,1]))
+  #for(i in 1:length(colnames(dataset))) {
+  #  nas = nas | is.na(dataset[, i])
+  #}
+  #nas = !nas
+  #filteredSet = dataset[nas, ]
+  #return(filteredSet)
 }

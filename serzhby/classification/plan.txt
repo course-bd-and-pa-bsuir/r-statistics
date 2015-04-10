@@ -1,6 +1,14 @@
-1. Try to create a linear regression function for non categorial variables. For example, length ~ diameter + height
-2. If regression is bad, try to remove outliers (graphical analysis shows a lot of outliers).
-3. Try to use k nearest neighbours method to fill in categorial values (sex).
-4. Remove all remaining rows containing NAs after previous steps (we have >4000 samples, omitting rows with NAs won't make a lot of troubles).
-5. Check efficiency of selected methods by comparing statistical values of original and resulting datasets.
+Dataset - data about measurements of abalones (sex, length, diameter, height, number of rings (shows aproximate age), whole weight, weight of shell, etc)
+
+Data preparation steps:
+1. Try to create a linear regression function for non categorial variables to fill gaps (NAs). For example, length ~ diameter + height.
+2. If the regression is bad, try to remove outliers (graphical analysis of the dataset shows a lot of outliers) and try linear regression again.
+3. The column 'whole weight' can be restored from other columns: shucked weight, viscera weight, shell weight. Analysis shows, that 
+	whole weight ≈ k * (shucked weight + viscera weight + shell weight)
+
+	where k = 1.05 is the median of [ whole weight / (shucked weight + viscera weight + shell weight) ] distribution
+4. Try to use k nearest neighbours method to fill in categorial values (sex).
+5. Remove all remaining rows containing NAs after previous steps (we have >4000 samples, omitting rows with NAs won't make much difference).
+6. Check efficiency of the previous steps by comparing statistical values of original and resulting datasets.
+7. Also try to simply remove rows with NAs from the original dataset. Then comare results with results from step 6. Choose the best approach.
 
